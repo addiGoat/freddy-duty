@@ -1,0 +1,27 @@
+.PHONY: clean run
+
+NAME = dungeon-post
+CXX = clang++
+SRC = $(wildcard src/*.cpp)
+INCDIR = include
+OBJS = $(patsubst src/%.cpp,build/%.o,$(SRC))
+DEPS = $(OBJS:.o=.d)
+
+CXXFLAGS = -Wall -std=c++17 -MMD -MP -I$(INCDIR)
+
+$(NAME): $(OBJS)
+	$(CXX) $(OBJS) -o $(NAME)
+
+build:
+	mkdir -p build
+
+build/%.o: src/%.cpp | build
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+-include $(DEPS)
+
+clean:
+	rm -f $(OBJS) $(DEPS) $(NAME)
+
+run: $(NAME)
+	./$(NAME)
