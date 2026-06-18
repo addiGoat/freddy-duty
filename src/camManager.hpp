@@ -2,8 +2,8 @@
 #include "button.hpp"
 
 struct CamButtonInfo {
-    Vector2 pos;
     int camID;
+    Vector2 pos;
 };
 
 struct CamFeed {
@@ -25,6 +25,12 @@ public:
     
 private:
     int currentCam = 0;
+    std::vector<CamButtonInfo> buttonInfo = {
+        { 1, { 200, 200 }},
+        { 2, { 600, 200 }},
+        { 3, { 200, 600 }},
+        { 4, { 600, 600 }},
+    };
     std::vector<Button> cameraButtons;
     std::vector<CamFeed> cameraFeeds;
 };
