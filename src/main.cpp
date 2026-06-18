@@ -1,27 +1,35 @@
 #include <raylib.h>
-#include "button.hpp"
+#include "camManager.hpp"
 
+Texture2D MakeTexture(const char *fileName) {
+    Image img = LoadImage(fileName);
+    Texture2D tex = LoadTextureFromImage(img);
+    UnloadImage(img);
+    return tex;
+}
 
 int main() {
     InitWindow(1280, 720, "freddy-duty");
     SetTargetFPS(60);
 
-    int currentCamera = 0;
+    CamManager camManager;
 
-    Button testButton({ 640, 320 }, { 100, 80 }, 1);
-
-    testButton.onClick = [&]() {
-        currentCamera = testButton.cameraNumber;
+    Rectangle camDest = {
+        0, 0,
+        (float)GetScreenWidth(),
+        (float)GetScreenHeight(),
     };
 
     while (!WindowShouldClose()) {
-        testButton.UpdateButton(GetMousePosition());
+        camManager.UpdateButtons();
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        testButton.DrawButton();
-        DrawText(TextFormat("Camera: %i", currentCamera), 40, 40, 40, BLACK);
+        camManager.DrawButtons();
+        camManager.DrawInterface();
+        
         EndDrawing();
     }
 }
+

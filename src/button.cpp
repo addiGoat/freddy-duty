@@ -2,7 +2,10 @@
 #include "button.hpp"
 
 Button::Button(Vector2 pos, Vector2 size, int camera, ButtonStyle s) 
-    : cameraNumber(camera), bounds({ pos.x, pos.y, size.x, size.y }), style(s) {};
+    : cameraNumber(camera), bounds({ pos.x, pos.y, size.x, size.y }), style(s) {
+        state = IDLE;
+        color = style.idle;
+    };
 
 void Button::UpdateButton(Vector2 mousePos) {
     if (CheckCollisionPointRec(mousePos, bounds)) {
