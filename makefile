@@ -1,16 +1,21 @@
 CXX := clang++
 CXXFLAGS := -std=c++20 -Wall -Wextra -g
+CPPFLAGS := -Iinclude
 LDFLAGS := $(shell pkg-config --libs raylib)
 
-SRC := src/*.cpp
-INC := include/*.hpp
+SRC := $(wildcard src/*.cpp)
+OBJ := $(patsubst src/%.cpp,build/%.o,$(SRC))
 OUT := game
 
-$(OUT): $(SRC) 
-	$(CXX) $(CXXFLAGS) $(SRC) -o $(OUT) $(LDFLAGS)
+$(OUT): $(OBJ) 
+	$(CXX) $(OBJ) -o $@ $(LDFLAGS)
+
+build/%.o: src/%.cpp
+	mkdir -p build
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
 run: $(OUT)
 	./$(OUT)
 
 clean: 
-	rm -rf $(OUT)
+	rm -rf build $(OUT)
