@@ -22,7 +22,7 @@ void DrawDebugCursor(Vector2 mousePos) {
     int y = mousePos.y;
     DrawText(
             TextFormat("X: %i, Y: %i", x, y),
-            40, 40, 40, BLACK
+            1000, 20, 40, BLACK
             );
 }
 
@@ -30,15 +30,10 @@ int main() {
     int windowWidth = 1280;
     int windowHeight = 720;
     InitWindow(windowWidth, windowHeight, "freddy-duty");
-    SetTargetFPS(120);
+    SetTargetFPS(60);
 
     CamManager camManager;
 
-    Rectangle camDest = {
-        0, 0,
-        (float)GetScreenWidth(),
-        (float)GetScreenHeight(),
-    };
 
     while (!WindowShouldClose()) {
         camManager.UpdateButtons();
@@ -46,8 +41,11 @@ int main() {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
+        camManager.DrawCameraFeed();
         camManager.DrawButtons();
         camManager.DrawInterface();
+
+        DrawDebugCursor(GetMousePosition());
         
         EndDrawing();
     }
