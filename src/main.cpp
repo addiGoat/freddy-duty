@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include "button.hpp"
+#include "camManager.hpp"
 
 void DrawDebugCursor(Vector2 mousePos) {
     DrawLine(
@@ -32,25 +32,24 @@ int main() {
     InitWindow(windowWidth, windowHeight, "freddy-duty");
     SetTargetFPS(120);
 
-    int currentCamera = 0;
+    CamManager camManager;
 
-    Button testButton({ 640, 320 }, { 100, 80 }, 1);
-
-    testButton.onClick = [&]() {
-        currentCamera = testButton.cameraNumber;
+    Rectangle camDest = {
+        0, 0,
+        (float)GetScreenWidth(),
+        (float)GetScreenHeight(),
     };
 
     while (!WindowShouldClose()) {
-        testButton.UpdateButton(GetMousePosition());
+        camManager.UpdateButtons();
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        testButton.DrawButton();
-        DrawText(TextFormat("Camera: %i", currentCamera),
-                windowWidth / 2, 40, 40, BLACK);
-
-        DrawDebugCursor(GetMousePosition());
+        camManager.DrawButtons();
+        camManager.DrawInterface();
+        
         EndDrawing();
     }
 }
+
